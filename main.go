@@ -11,6 +11,7 @@ func MyTimer(duration time.Duration, note string) {
 	h := big.NewInt(int64(time.Until(end_time).Hours()))
 	m := big.NewInt(int64(time.Until(end_time).Minutes()))
 	s := big.NewInt(int64(time.Until(end_time).Seconds()))
+	ms := big.NewInt(int64(time.Until(end_time).Milliseconds()))
 	s = s.Mod(s, big.NewInt(60))
 	m = m.Mod(m, big.NewInt(60))
 	fmt.Printf("Start:\t %s \n", start_time.Format(time.ANSIC))
@@ -19,18 +20,19 @@ func MyTimer(duration time.Duration, note string) {
 
 		fmt.Printf("Note:\t %s\n", note)
 	}
-	fmt.Printf("\rTimer:\t %02d:%02d:%02d", h, m, s)
+	fmt.Printf("\rTimer:\t %02d:%02d:%02d:%02d", h, m, s, ms)
 	i := int64(1)
-	ticker1 := time.NewTicker(1 * time.Second)
+	ticker1 := time.NewTicker(10 * time.Millisecond)
 	for _ = range ticker1.C {
 		i++
 		h = big.NewInt(int64(time.Until(end_time).Hours()))
 		m = big.NewInt(int64(time.Until(end_time).Minutes()))
 		s = big.NewInt(int64(time.Until(end_time).Seconds()))
+		ms = big.NewInt(int64(time.Until(end_time).Milliseconds()))
 		s = s.Mod(s, big.NewInt(60))
 		m = m.Mod(m, big.NewInt(60))
-		fmt.Printf("\rTimer:\t %02d:%02d:%02d", h, m, s)
-		if i > int64(duration/time.Second) {
+		fmt.Printf("\rTimer:\t %02d:%02d:%02d:%02d", h, m, s, ms)
+		if i > int64(duration/time.Microsecond) {
 			ticker1.Stop()
 			break
 		}
